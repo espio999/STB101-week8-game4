@@ -1,0 +1,61 @@
+---
+title: "satisfuction survey"
+output: html_notebook
+---
+```{r setup}
+library(readxl)
+Book4 <- read_excel("Book4.xlsx", sheet = "Sheet1", range = "b1:d6")
+
+x = c(Book4$`business men`)
+y = c(Book4$Students)
+z = c(Book4$`Senior citizens`)
+
+makeVector1 = function(val){
+  ret = c()
+  
+  for (i1 in 1:length(val)) {
+    for (i2 in 1:val[i1]){
+      ret = c(ret, i1)
+    }
+  }
+  return(ret)
+}
+
+makeVector2 = function(c, len){
+  ret = c()
+  
+  for (i1 in 1:c){
+    for (i2 in 1:len){
+      ret = c(ret, i1)
+    }
+  }
+  
+  return(ret)
+}
+
+datx = makeVector1(x)
+daty = makeVector1(y)
+datz = makeVector1(z)
+
+datc = makeVector2(3, 50)
+
+df = data.frame(
+  category = factor(datc),
+  satisfuction = factor(c(datx, daty, datz))
+)
+```
+
+##  Test if there are any differences for satisfaction among business men, students, and senior citizen.  
+### assumption  
+H0: no differences  
+H1: not H0  
+
+```{r}
+kruskal.test(df$satisfuction~df$category)
+```
+
+P is greater than 5%.  
+H0 is not rejected.
+
+### conclusion  
+There is no difference in satisfuction among business men, students and senior citizens.
